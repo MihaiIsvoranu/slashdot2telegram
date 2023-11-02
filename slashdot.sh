@@ -6,7 +6,7 @@ while IFS= read -r line; do
 		"Link: "*) link=${line#*: } ;;
 		"Description: "*) desc=${line#*: }
 		desc=$(echo "$desc" | sed -e 's/—//' -e 's/mdash;//' -e 's/&/ /g')
-		no_of_chars=$(echo "$desc" | wc -m)
+		no_of_chars=${#desc}
 		if [[ $no_of_chars -gt 100 ]]; then
 			curl -s -d chat_id="@slashdotfeed" -d text="<b>$title</b>"$'\n\n'"$desc"$'\n\n'"<a href=\"$(echo $link | awk -F '?' '{print $1}')\">🔗 read more</a> | @slashdotfeed" -d parse_mode="HTML" -d disable_web_page_preview="true" -X POST https://api.telegram.org/YOURTOKEN/sendMessage
 		fi
